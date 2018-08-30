@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Router, Link, withSiteData } from 'react-static'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 //
 import logoImg from '../logo.png'
 
@@ -54,25 +54,83 @@ const Hamburger = styled.div`
  }
 `
 
+const expand = keyframes`
+  10% {
+    border-radius: 50%;
+    height: 10vh;
+    width: 10%;
+  };
+  75% {
+    border-radius: 50%;
+    height: 70vh;
+    width: 80%;
+    bottom: 20%;
+  };
+  100% {
+    border-radius: 0%;
+    opacity: 1;
+    height: 100vh ;
+    width: 100%;
+    bottom: 0;
+  };
+`
+const NavSideBar = styled.div`
+  position: fixed;
+  height: calc(100vh - 60px);
+  width: 200px;
+  right: ${ props => props.open ? '0' : '-200px' };
+  bottom: 0;
+  background: #27383B;
+  transition: ease-in-out 0.3s;
+  z-index: 1000;
+  ul {
+    color: white;
+    li {
+      
+      cursor: pointer;
+    
+    }
+  }
+`
+const To = styled(Link)`
+  
+`
 class Nav extends Component {
   state = {
     open: false
   }
-  openMenu = () => {
-    this.setState({ open: !this.state.open })
+  onScroll = () => {
+    this.setState({ open: false })
+  }
+  componentDidMount() {
+    window.addEventListener('scroll', this.onScroll)
+  }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.onScroll)
+  }
+  openMenu = (open) => {
+    this.setState({ open: open })
   }
   render() {
     return (
     <NavContainer>
-      <MovieLogo to="/">
-          <p>Movie</p>
-          <p>App</p>
-      </MovieLogo>
-      <Hamburger open={this.state.open} onClick={ this.openMenu }>
+      <NavSideBar open={ this.state.open }>
+        <ul>
+          <li onClick={ () => this.openMenu(false) }><Link >In Progress</Link></li>
+        </ul>
+      </NavSideBar>
+      <div onClick={ () => this.openMenu(false) }>
+        <MovieLogo  to="/">
+            <p>Movie</p>
+            <p>App</p>
+        </MovieLogo>
+      </div>
+      <Hamburger open={ this.state.open } onClick={ () => this.openMenu(!this.state.open) }>
         <span></span>
         <span></span>
         <span></span>
       </Hamburger>
+      
     </NavContainer>
     )
   }

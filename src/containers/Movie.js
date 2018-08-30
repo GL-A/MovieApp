@@ -240,7 +240,6 @@ class Movie extends Component {
         <BackdropFilter/>
           <MovieJumbotron>
             <MovieHeaderContainer>
-            { console.log(movie )}
             <img src={ movie.moviePoster } />
             <div>
               <h2>{ movie.title.toUpperCase() }</h2>

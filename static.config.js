@@ -32,6 +32,13 @@ export default {
         })),
       },
       {
+        path: '/search',
+        component: 'src/containers/Search',
+        getData: async () => ({
+          genres
+        })
+      },
+      {
         is404: true,
         component: 'src/containers/404',
       },
